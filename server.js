@@ -4,6 +4,8 @@ const connectDB = require('./config/db');
 const app = express();
 connectDB();
 
+app.use(express.json({ extended: false }));
+
 app.get('/', (req, res) => res.json({ message: ' API connected' }));
 
 app.use('/api/users', require('./routes/users'));
