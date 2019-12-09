@@ -46,10 +46,19 @@ const ContactState = props => {
 
   // TODO: actions
 
+  const addContact = contact => {
+    contact.id = uuid.v4();
+    dispatch({
+      type: ADD_CONTACT,
+      payload: contact
+    });
+  };
+
   return (
     <contactContext.Provider
       value={{
-        contacts: state.contacts
+        contacts: state.contacts,
+        addContact
       }}
     >
       {props.children}
