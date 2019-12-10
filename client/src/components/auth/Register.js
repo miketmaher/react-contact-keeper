@@ -1,13 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
 
-const Register = () => {
+const Register = ({ history }) => {
   const alertContext = useContext(AlertContext);
   const { setAlert } = alertContext;
 
   const authContext = useContext(AuthContext);
-  const { registerUser, error, clearErrors } = authContext;
+  const { registerUser, error, clearErrors, isAuthenticated } = authContext;
 
   const [user, setUser] = useState({
     name: '',
@@ -19,11 +20,14 @@ const Register = () => {
   const { name, email, password, passwordConfirm } = user;
 
   useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/');
+    }
     if (error === 'User exists') {
       setAlert(error, 'danger');
       clearErrors();
     }
-  }, [error]);
+  }, [error, isAuthenticated, history]);
 
   const onChange = e => {
     setUser({
@@ -103,6 +107,10 @@ const Register = () => {
       </form>
     </div>
   );
+};
+
+Register.propTypes = {
+  history: PropTypes.object.isRequired
 };
 
 export default Register;

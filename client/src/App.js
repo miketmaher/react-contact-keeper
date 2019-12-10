@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import setAuthToken from './utils/setAuthToken';
 import ContactState from './context/contact/ContactState';
 import AuthState from './context/auth/AuthState';
 import { Home, About } from './components/pages';
@@ -9,6 +10,10 @@ import Login from './components/auth/Login';
 import Alerts from './components/layout/Alerts';
 import Navbar from './components/layout/Navbar';
 import './App.css';
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
   return (
