@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
 
-const Login = () => {
+const Login = ({ history }) => {
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
+
+  const authContext = useContext(AuthContext);
+  const { login, error, clearErrors, isAuthenticated } = authContext;
+
   const [user, setUser] = useState({
     email: '',
     password: ''
   });
 
-  const { name, email, password, passwordConfirm } = user;
+  const { email, password } = user;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/');
+    }
+    if (error === 'Invalid Credentials') {
+      setAlert(error, 'danger');
+      clearErrors();
+    }
+  }, [error, isAuthenticated, history]);
 
   const onChange = e => {
     setUser({
@@ -17,6 +36,11 @@ const Login = () => {
 
   const onSubmit = e => {
     e.preventDefault();
+    if (email === '' || password === '') {
+      setAlert('Please complete all fields', 'danger');
+    } else {
+      login(user);
+    }
   };
 
   return (
@@ -40,12 +64,16 @@ const Login = () => {
         </div>
         <input
           type="submit"
-          value="Register"
+          value="Login"
           className="btn btn-primary btn-block"
         />
       </form>
     </div>
   );
+};
+
+Login.propTypes = {
+  history: PropTypes.object.isRequired
 };
 
 export default Login;

@@ -26,7 +26,7 @@ const AuthState = props => {
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  const registerUser = async nweUser => {
+  const registerUser = async newUser => {
     const config = {
       headers: {
         'Content-type': 'application/json'
@@ -34,7 +34,7 @@ const AuthState = props => {
     };
 
     try {
-      const res = await axios.post('/api/users', nweUser, config);
+      const res = await axios.post('/api/users', newUser, config);
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
@@ -64,7 +64,27 @@ const AuthState = props => {
       });
     }
   };
-  const login = () => {};
+  const login = async user => {
+    const config = {
+      headers: {
+        'Content-type': 'application/json'
+      }
+    };
+
+    try {
+      const res = await axios.post('/api/auth', user, config);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      });
+      loadUser();
+    } catch (error) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: error.response.data.msg
+      });
+    }
+  };
   const logout = () => {};
   const clearErrors = () =>
     dispatch({
