@@ -7,12 +7,12 @@ const Contact = ({ contact }) => {
   const {
     deleteContact,
     setCurrentContact,
-    clearCurrentContact
+    clearCurrentContact,
   } = contactContext;
-  const { id, name, email, phone, type } = contact;
+  const { _id, name, email, phone, type } = contact;
 
   const onDelete = () => {
-    deleteContact(id);
+    deleteContact(_id);
     clearCurrentContact();
   };
 
@@ -22,7 +22,7 @@ const Contact = ({ contact }) => {
         {name}{' '}
         <span
           style={{
-            float: 'right'
+            float: 'right',
           }}
           className={
             'badge' +
@@ -60,7 +60,7 @@ const Contact = ({ contact }) => {
 };
 
 Contact.propTypes = {
-  contact: PropTypes.object.isRequired
+  contact: PropTypes.object.isRequired,
 };
 
 export default Contact;
